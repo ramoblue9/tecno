@@ -1,1 +1,36 @@
+(function () {
+    var originales = new WeakMap();
 
+    function check() {
+        try {
+            var box = exportRoot.cargadortest.box;
+
+            for (var i = 0; i < 4; i++) {
+                var a = box["answer" + i];
+                if (!a || !a.txt || !a.bot) continue;
+
+                var t = a.txt;
+
+                if (!originales.has(t)) {
+                    originales.set(t, {
+                        color: t.color,
+                        outline: t.outline
+                    });
+                }
+
+                var original = originales.get(t);
+
+                if (a.bot.thisChoice === true) {
+                    t.color = "#00FF00";
+                } else {
+                    t.color = original.color;
+                    t.outline = original.outline;
+                }
+            }
+        } catch (e) {}
+
+        setTimeout(check, 300);
+    }
+
+    check();
+})();
